@@ -31,6 +31,5 @@ lr_scheduler_kwargs:
 
 # Output & logging
 output_dir: Apertus-FT/output/apertus_lora
-# report_to:
-#   - trackio
+report_to: "none" 
 seed: 42
