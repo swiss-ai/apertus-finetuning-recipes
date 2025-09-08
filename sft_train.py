@@ -53,6 +53,7 @@ def main(script_args, training_args, model_args):
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.model_name_or_path,
     )
+    tokenizer.pad_token = tokenizer.eos_token
 
     # --------------
     # Load dataset
@@ -84,4 +85,4 @@ if __name__ == "__main__":
     script_args, training_args, model_args, _ = parser.parse_args_and_config(
         return_remaining_strings=True
     )
-    main(script_args, training_args, model_
+    main(script_args, training_args, model_args)
