@@ -1,0 +1,36 @@
+# Model
+model_name_or_path: swiss-ai/Apertus-8B-Instruct-2509
+attn_implementation: eager
+dtype: bfloat16
+
+# Dataset
+dataset_name: HuggingFaceH4/Multilingual-Thinking
+dataset_num_proc: 12
+
+# Hyperparameters
+learning_rate: 2.0e-4
+gradient_checkpointing: true
+num_train_epochs: 1.0
+logging_steps: 1
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 1
+
+# LoRA / PEFT
+use_peft: true
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.0
+lora_target_modules: all-linear
+
+# Seq length & scheduler
+max_length: 4096
+warmup_ratio: 0.03
+lr_scheduler_type: cosine_with_min_lr
+lr_scheduler_kwargs:
+  min_lr_rate: 0.1
+
+# Output & logging
+output_dir: Apertus-FT/output/apertus_lora
+# report_to:
+#   - trackio
+seed: 42
