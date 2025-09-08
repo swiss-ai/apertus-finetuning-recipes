@@ -3,7 +3,7 @@ peft>=0.17.0
 trl>=0.21.0
 transformers>=4.55.0
 --index-url https://download.pytorch.org/whl/test/cu128
-torch>=2.8.0
+torch
 torchvision
 torchaudio
 deepspeed

@@ -84,4 +84,4 @@ if __name__ == "__main__":
     script_args, training_args, model_args, _ = parser.parse_args_and_config(
         return_remaining_strings=True
     )
-    main(script_args, training_args, model_args)
+    main(script_args, training_args, model_
