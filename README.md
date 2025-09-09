@@ -1,6 +1,6 @@
 # Apertus Recipes
 
-Fine-tuning examples for Swiss AI’s **Apertus language models** (8B and 70B).
+Fine-tuning examples for Swiss AI’s **Apertus** language models (8B and 70B).
 
 ---
 
@@ -30,7 +30,7 @@ python sft_train.py --config configs/sft_lora.yaml
 
 ---
 
-## ⚙️ Model Selection
+## Model Selection
 
 All scripts work with both 8B and 70B versions. Switch model size by editing `model_path`:
 
@@ -46,7 +46,7 @@ Device mapping and configuration are handled automatically.
 
 ---
 
-## 🏋️ Fine-Tuning
+## Fine-Tuning
 
 ### Full-parameter training (4 GPUs)
 
@@ -68,7 +68,7 @@ python sft_train.py --config configs/sft_lora.yaml
 
 ---
 
-## 🔧 Customization
+## Customization
 
 You can adjust datasets and hyperparameters either by editing the config YAMLs (`sft_lora.yaml`, `sft_full.yaml`) or passing overrides directly:
 
@@ -80,3 +80,60 @@ accelerate launch --config_file configs/zero3.yaml \
 
 ---
 
+## Model Saving
+
+
+After training completes, your fine-tuned models are saved in the following locations:
+
+- **LoRA Training**: `Apertus-FT/output/apertus_lora/`
+- **Full Fine-tuning**: `Apertus-FT/output/apertus_full/`
+
+Each output directory contains:
+- `adapter_model.safetensors` (LoRA only) - The LoRA adapter weights
+- `adapter_config.json` (LoRA only) - LoRA configuration
+- `training_args.bin` - Training arguments used
+- `trainer_state.json` - Training state and metrics
+- `tokenizer.json`, `tokenizer_config.json` - Tokenizer files
+- `config.json` - Model configuration
+
+---
+
+## Using Your Fine-tuned Models
+
+#### For LoRA Adapters
+
+LoRA adapters are lightweight and can be loaded with the base model:
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
+
+# Load base model and tokenizer
+base_model = AutoModelForCausalLM.from_pretrained("swiss-ai/Apertus-8B-Instruct-2509")
+tokenizer = AutoTokenizer.from_pretrained("swiss-ai/Apertus-8B-Instruct-2509")
+
+# Load LoRA adapter
+model = PeftModel.from_pretrained(base_model, "Apertus-FT/output/apertus_lora/")
+
+# For inference, you can merge the adapter (optional)
+model = model.merge_and_unload()
+```
+
+#### For Full Fine-tuned Models
+
+Full fine-tuned models can be loaded directly:
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Load your fine-tuned model
+model = AutoModelForCausalLM.from_pretrained("Apertus-FT/output/apertus_full/")
+tokenizer = AutoTokenizer.from_pretrained("Apertus-FT/output/apertus_full/")
+```
+
+---
+
+## Contributors
+
+- [Kaustubh Ponkshe](https://kaustubhp11.github.io/)
+- [Raghav Singhal](https://raghavsinghal10.github.io/)
