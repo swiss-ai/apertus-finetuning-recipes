@@ -1,4 +1,4 @@
-# Apertus Recipes
+# Apertus Fine-Tuning Recipes
 
 Fine-tuning examples for Swiss AI’s **Apertus** language models (8B and 70B).
 
