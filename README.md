@@ -68,6 +68,12 @@ python sft_train.py --config configs/sft_lora.yaml
 
 ---
 
+### Multi-Node training (3 nodes x 4 GPUs)
+
+```bash
+# Standard attention
+bash --nodes=3 submit_multinode.sh
+```
 ## Customization
 
 You can adjust datasets and hyperparameters either by editing the config YAMLs (`sft_lora.yaml`, `sft_full.yaml`) or passing overrides directly:
