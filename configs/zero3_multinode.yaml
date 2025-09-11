@@ -9,11 +9,8 @@ deepspeed_config:
   zero_stage: 3
 distributed_type: DEEPSPEED
 downcast_bf16: 'no'
-# machine_rank: 0
 main_training_function: main
 mixed_precision: bf16
-# num_machines: 3
-# num_processes: 12
 rdzv_backend: static
 same_network: true
 tpu_env: []
