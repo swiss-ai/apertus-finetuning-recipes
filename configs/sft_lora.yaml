@@ -1,6 +1,6 @@
 # Model
 model_name_or_path: swiss-ai/Apertus-8B-Instruct-2509
-attn_implementation: eager
+attn_implementation:  flash-attention-3
 dtype: bfloat16
 
 # Dataset
