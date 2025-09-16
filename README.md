@@ -1,8 +1,9 @@
 # Apertus Fine-Tuning Recipes
 
-Fine-tuning examples for Swiss AI’s **Apertus** language models (8B and 70B).
+This repository provides fine-tuning recipes for Swiss AI’s Apertus language models (8B and 70B), supporting both full-parameter and LoRA-based approaches.
+Built on top of popular frameworks including TRL, Accelerate, and Transformers, the recipes are optimized for efficient training on modern GPUs.
+LoRA fine-tuning of the 8B model can be done on a single 40 GB GPU, while training the 70B model requires a multi-GPU setup.
 
----
 
 ## 🔗 Resources
 - [Apertus 8B Instruct](https://huggingface.co/swiss-ai/Apertus-8B-Instruct-2509)  
