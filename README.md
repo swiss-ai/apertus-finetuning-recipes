@@ -8,7 +8,8 @@ LoRA fine-tuning of the 8B model can be done on a single 40 GB GPU, while traini
 ## 🔗 Resources
 - [Apertus 8B Instruct](https://huggingface.co/swiss-ai/Apertus-8B-Instruct-2509)  
 - [Apertus 70B Instruct](https://huggingface.co/swiss-ai/Apertus-70B-Instruct-2509)  
-- [Full collection on HF](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059)  
+- [Full collection on HF](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059)
+- [Fine tuning Cookbook](https://huggingface.co/learn/cookbook/en/fine_tuning_code_llm_on_single_gpu) 
 
 ---
 
