@@ -2,20 +2,19 @@
 
 This repository provides fine-tuning recipes for the [Apertus models](https://apertus-ai.org) from the [Swiss AI Initiative](https://swiss-ai.org), supporting both full-parameter and LoRA-based approaches.
 
-For more background, please see our [online documentation](https://apertus-ai.org/docs/tech/).
-
-Built on top of popular frameworks including TRL, Accelerate, and Transformers, the recipes are optimized for efficient training on modern GPUs, and cover several techniques. LoRA fine-tuning of the smaller models can be done on a single GPU, while full-parameter training the 70B model typically requires a multi-GPU setup and considerable time.
-
+For more background on Apertus, please see our [online documentation](https://apertus-ai.org/docs/tech/), which also includes fine-tuning and evaluation references.
 
 ## 🔗 Resources
 
-- [Apertus 1.5](https://huggingface.co/collections/swiss-ai/apertus-v15) (Latest)
-- [Apertus 1.1 Mini](https://huggingface.co/collections/swiss-ai/apertus-mini)
-- [Apertus 1.0](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059)
+- [Apertus 1.5](https://huggingface.co/collections/swiss-ai/apertus-v15) - 🚧 Latest release, expert level.
+- [Apertus 1.1 Mini](https://huggingface.co/collections/swiss-ai/apertus-mini) - ❇️ Great for beginners and hardware constraints.
+- [Apertus 1.0](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059) - 🇨🇭 Our initial, best known, and most widely adapted release.
 
----
+As a good starting point, we suggest reading through the list of community fine-tunes that have been publicly shared online. Look for the **Model tree** section in the right-hand column of the Hugging Face model cards, where you can find links to existing Adapters, Finetunes and Quantizations of our models.
 
 ## ⚡ Quickstart
+
+Based on the [TRL](http://hf.co/docs/trl) framework (we may add others in the future), these recipes are optimized for efficient training on modern GPUs, and cover several techniques. LoRA fine-tuning of the smaller models can be done on a single GPU, while full-parameter training the 70B model typically requires a multi-GPU setup and considerable time. A good introduction to the subject can be found at [Open-Source AI Cookbook - Hugging Face](https://huggingface.co/learn/cookbook/en/fine_tuning_code_llm_on_single_gpu)
 
 ```bash
 # 1. Create and activate environment (Python 3.12)
@@ -40,11 +39,11 @@ See the [Astral](https://docs.astral.sh/uv/guides/integration/pytorch/#using-a-p
 ## Model Selection
 
 Our scripts work with all versions of the Apertus model family. 
-Switch model size by editing the top of `configs/*.yaml`:
+Switch model size by editing the top of `configs/*.yaml` to match 
+the exact name of the base model:
 
 ```yaml
-# Default: v1.5 8B
-model_name_or_path: swiss-ai/Apertus-v1.5-8B
+model_name_or_path: swiss-ai/Apertus-1.1-4B
 ```
 
 Device mapping and configuration are handled automatically.
