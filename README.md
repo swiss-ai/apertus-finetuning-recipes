@@ -6,11 +6,13 @@ For more background on Apertus, please see our [online documentation](https://ap
 
 ## 🔗 Resources
 
-- [Apertus 1.5](https://huggingface.co/collections/swiss-ai/apertus-v15) - 🚧 Latest release, expert level.
-- [Apertus 1.1 Mini](https://huggingface.co/collections/swiss-ai/apertus-mini) - ❇️ Great for beginners and hardware constraints.
-- [Apertus 1.0](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059) - 🇨🇭 Our initial, best known, and most widely adapted release.
+- [Apertus 1.5](https://huggingface.co/collections/swiss-ai/apertus-v15) - ❇️ Latest release, should be used for all future fine-tuning efforts*
+- [Apertus 1.1 Mini](https://huggingface.co/collections/swiss-ai/apertus-mini) - 🛠️ Great for beginners and limited hardware settings.
+- [Apertus 1.0](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059) - 🇨🇭 Our initial and currently most widely adapted release.
 
 As a good starting point, we suggest reading through the list of community fine-tunes that have been publicly shared online. Look for the **Model tree** section in the right-hand column of the Hugging Face model cards, where you can find links to existing Adapters, Finetunes and Quantizations of our models.
+
+\* 🚧 Currently, the 1.5 model weights require additional configuration for full support. See our [Transformers docs](https://apertus-ai.org/docs/guides/transformers/) for details.
 
 ## ⚡ Quickstart
 
