@@ -1,5 +1,5 @@
 # Model
-model_name_or_path: swiss-ai/Apertus-8B-Instruct-2509
+model_name_or_path: swiss-ai/Apertus-v1.1-4B
 attn_implementation: kernels-community/vllm-flash-attn3
 dtype: bfloat16
 

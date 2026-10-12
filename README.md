@@ -1,46 +1,51 @@
 # Apertus Fine-Tuning Recipes
 
-This repository provides fine-tuning recipes for Swiss AI’s Apertus language models (8B and 70B), supporting both full-parameter and LoRA-based approaches.
-Built on top of popular frameworks including TRL, Accelerate, and Transformers, the recipes are optimized for efficient training on modern GPUs.
-LoRA fine-tuning of the 8B model can be done on a single 40 GB GPU, while training the 70B model requires a multi-GPU setup.
+This repository provides fine-tuning recipes for the [Apertus models](https://apertus-ai.org) from the [Swiss AI Initiative](https://swiss-ai.org), supporting both full-parameter and LoRA-based approaches.
 
+For more background on Apertus, please see our [online documentation](https://apertus-ai.org/docs/tech/), which also includes fine-tuning and evaluation references.
 
 ## 🔗 Resources
-- [Apertus 8B Instruct](https://huggingface.co/swiss-ai/Apertus-8B-Instruct-2509)  
-- [Apertus 70B Instruct](https://huggingface.co/swiss-ai/Apertus-70B-Instruct-2509)  
-- [Full collection on HF](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059)  
 
----
+- [Apertus 1.5](https://huggingface.co/collections/swiss-ai/apertus-v15) - ❇️ Latest release, should be used for all future fine-tuning efforts*
+- [Apertus 1.1 Mini](https://huggingface.co/collections/swiss-ai/apertus-mini) - 🛠️ Great for beginners and limited hardware settings.
+- [Apertus 1.0](https://huggingface.co/collections/swiss-ai/apertus-llm-68b699e65415c231ace3b059) - 🇨🇭 Our initial and currently most widely adapted release.
+
+As a good starting point, we suggest reading through the list of community fine-tunes that have been publicly shared online. Look for the **Model tree** section in the right-hand column of the Hugging Face model cards, where you can find links to existing Adapters, Finetunes and Quantizations of our models.
+
+\* 🚧 Currently, the 1.5 model weights require additional configuration for full support. See our [Transformers docs](https://apertus-ai.org/docs/guides/transformers/) for details.
 
 ## ⚡ Quickstart
 
-```bash
-# 1. Create and activate environment
-uv venv apertus --python 3.10 && source apertus/bin/activate
+Based on the [TRL](http://hf.co/docs/trl) framework (we may add others in the future), these recipes are optimized for efficient training on modern GPUs, and cover several techniques. LoRA fine-tuning of the smaller models can be done on a single GPU, while full-parameter training the 70B model typically requires a multi-GPU setup and considerable time. A good introduction to the subject can be found at [Open-Source AI Cookbook - Hugging Face](https://huggingface.co/learn/cookbook/en/fine_tuning_code_llm_on_single_gpu)
 
-# 2. Install PyTorch (CUDA 12.8 wheels)
+```bash
+# 1. Create and activate environment (Python 3.12)
+uv venv apertus --python 3.12 && source apertus/bin/activate
+
+# 2. Install PyTorch (see link below)
 uv pip install torch torchvision torchaudio \
-    --index-url https://download.pytorch.org/whl/test/cu128
+    --index-url https://download.pytorch.org/whl/cpu # CPU-only
+# --index-url https://download.pytorch.org/whl/test/cu128 # CUDA 12.8
 
 # 3. Install project requirements
 uv pip install -r requirements.txt
 
 # 4. Launch LoRA training on a single GPU
 python sft_train.py --config configs/sft_lora.yaml
-````
+```
+
+See the [Astral](https://docs.astral.sh/uv/guides/integration/pytorch/#using-a-pytorch-index) or [PyTorch](https://pytorch.org/get-started/locally/) docs for details on installing this library, as appropriate for your hardware.
 
 ---
 
 ## Model Selection
 
-All scripts work with both 8B and 70B versions. Switch model size by editing `model_path`:
+Our scripts work with all versions of the Apertus model family. 
+Switch model size by editing the top of `configs/*.yaml` to match 
+the exact name of the base model:
 
-```python
-# Default: 8B
-model_path = "swiss-ai/Apertus-8B-Instruct-2509"
-
-# To use 70B:
-# model_path = "swiss-ai/Apertus-70B-Instruct-2509"
+```yaml
+model_name_or_path: swiss-ai/Apertus-1.1-4B
 ```
 
 Device mapping and configuration are handled automatically.
@@ -48,6 +53,14 @@ Device mapping and configuration are handled automatically.
 ---
 
 ## Fine-Tuning
+
+### LoRA training (1 GPU)
+
+```bash
+python sft_train.py --config configs/sft_lora.yaml
+```
+
+---
 
 ### Full-parameter training (4 GPUs)
 
@@ -59,12 +72,6 @@ accelerate launch --config_file configs/zero3.yaml sft_train.py --config configs
 accelerate launch --config_file configs/zero3.yaml sft_train.py \
     --config configs/sft_full.yaml \
     --attn_implementation kernels-community/vllm-flash-attn3
-```
-
-### LoRA training (1 GPU)
-
-```bash
-python sft_train.py --config configs/sft_lora.yaml
 ```
 
 ---
@@ -89,13 +96,13 @@ accelerate launch --config_file configs/zero3.yaml \
 
 ## Model Saving
 
-
 After training completes, your fine-tuned models are saved in the following locations:
 
 - **LoRA Training**: `Apertus-FT/output/apertus_lora/`
 - **Full Fine-tuning**: `Apertus-FT/output/apertus_full/`
 
 Each output directory contains:
+
 - `adapter_model.safetensors` (LoRA only) - The LoRA adapter weights
 - `adapter_config.json` (LoRA only) - LoRA configuration
 - `training_args.bin` - Training arguments used
@@ -109,15 +116,17 @@ Each output directory contains:
 
 #### For LoRA Adapters
 
-LoRA adapters are lightweight and can be loaded with the base model:
+LoRA adapters are lightweight, and can be loaded together with the base model:
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
+model_type = "swiss-ai/Apertus-v1.5-8B"
+
 # Load base model and tokenizer
-base_model = AutoModelForCausalLM.from_pretrained("swiss-ai/Apertus-8B-Instruct-2509")
-tokenizer = AutoTokenizer.from_pretrained("swiss-ai/Apertus-8B-Instruct-2509")
+base_model = AutoModelForCausalLM.from_pretrained(model_type)
+tokenizer = AutoTokenizer.from_pretrained(model_type)
 
 # Load LoRA adapter
 model = PeftModel.from_pretrained(base_model, "Apertus-FT/output/apertus_lora/")
@@ -144,3 +153,4 @@ tokenizer = AutoTokenizer.from_pretrained("Apertus-FT/output/apertus_full/")
 
 - [Kaustubh Ponkshe](https://kaustubhp11.github.io/)
 - [Raghav Singhal](https://raghavsinghal10.github.io/)
+- [Oleg Lavrovsky](https://people.epfl.ch/oleg.lavrovsky)
